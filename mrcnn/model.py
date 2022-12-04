@@ -1873,10 +1873,7 @@ class MaskRCNN():
             input_gt_boxes = KL.Input(
                 shape=[None, 4], name="input_gt_boxes", dtype=tf.float32)
             # Normalize coordinates
-             def norm_boxes_graph(x):
-                boxes,tensor_for_shape = x
-                shape = tf.shape(tensor_for_shape)[1:3]
-                return norm_boxes_graph(boxes,shape)
+            gt_boxes = KL.Lambda(lambda x: norm_boxes_graph2(x))([input_gt_boxes,input_image])
             # 3. GT Masks (zero padded)
             # [batch, height, width, MAX_GT_INSTANCES]
             if config.USE_MINI_MASK:
@@ -2908,3 +2905,7 @@ def denorm_boxes_graph(boxes, shape):
     scale = tf.concat([h, w, h, w], axis=-1) - tf.constant(1.0)
     shift = tf.constant([0., 0., 1., 1.])
     return tf.cast(tf.round(tf.multiply(boxes, scale) + shift), tf.int32)
+ def norm_boxes_graph2(x):
+    boxes,tensor_for_shape = x
+    shape = tf.shape(tensor_for_shape)[1:3]
+    return norm_boxes_graph(boxes,shape)
