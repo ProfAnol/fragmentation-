@@ -2118,10 +2118,10 @@ class MaskRCNN():
         # Conditional import to support versions of Keras before 2.2
         # TODO: remove in about 6 months (end of 2018)
         try:
-            from keras.engine import saving
+            from tensorflow.keras.engine import saving
         except ImportError:
             # Keras before 2.2 used the 'topology' namespace.
-            from keras.engine import topology as saving
+            from tensorflow.keras.engine import topology as saving
 
         if exclude:
             by_name = True
@@ -2156,7 +2156,7 @@ class MaskRCNN():
         """Downloads ImageNet trained weights from Keras.
         Returns path to weights file.
         """
-        from keras.utils.data_utils import get_file
+        from tensorflow.keras.utils.data_utils import get_file
         TF_WEIGHTS_PATH_NO_TOP = 'https://github.com/fchollet/deep-learning-models/'\
                                  'releases/download/v0.2/'\
                                  'resnet50_weights_tf_dim_ordering_tf_kernels_notop.h5'
